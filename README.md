@@ -13,6 +13,7 @@ Coordiante system for AngularJS
 * scaleY
 * fullscreen
 * show-input
+* api
 
 ### API
 * drawPoint(x, y)
