@@ -17,6 +17,7 @@ Coordiante system for AngularJS
 
 ### API
 * drawPoint(x, y)
+* drawFunction('function string')
 * getContext()
 
 ## features
