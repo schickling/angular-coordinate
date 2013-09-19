@@ -7,33 +7,74 @@ angular.module('angular-coordinate', [])
 			templateUrl: 'coordinate.html',
 			link: function (scope, element, attrs) {
 
-				var canvasElement, width, height, ctx, centerPoint;
+				var canvasElement, width, height, ctx, centerPoint, isDragging, scaleX, scaleY;
+
+				function initAttibutes() {
+
+					// scale
+					scaleX = attrs.scaleX || 100;
+					scaleY = attrs.scaleY || 100;
+
+					// width
+					width = parseInt(attrs.width, 10) || 700;
+					if (attrs.width.slice(-1) === '%') {
+						width *= 0.01;
+						width *= element[0].parentElement.offsetWidth;
+					}
+
+					// height
+					height = parseInt(attrs.height, 10) || 400;
+					if (attrs.height.slice(-1) === '%') {
+						height *= 0.01;
+						height *= element[0].parentElement.offsetHeight;
+					}
+
+					// center point (0, 0)
+					centerPoint = [width / 2, height / 2];
+
+				}
 
 				function initElement() {
 					var coordinateElement = element[0];
 
-					width = attrs.width || '700';
-					height = attrs.height || '400';
-					centerPoint = [width/2, height/2];
 					canvasElement = coordinateElement.getElementsByTagName('canvas')[0];
 					ctx = canvasElement.getContext('2d');
 
-					if (width.slice(-1) !== '%') {
-						width += 'px';
-					}
-
-					if (height.slice(-1) !== '%') {
-						height += 'px';
-					}
-
-					coordinateElement.style.width = canvasElement.style.width = width;
-					coordinateElement.style.height = canvasElement.style.height = height;
+					coordinateElement.style.width = canvasElement.style.width = width + 'px';
+					coordinateElement.style.height = canvasElement.style.height = height + 'px';
 					coordinateElement.style.display = 'block';
 
 				}
 
 				function initListeners() {
+					initScrollListener();
+					initDragAndDropListener();
+				}
 
+				function initScrollListener() {
+
+				}
+
+				function initDragAndDropListener() {
+
+					function mouseMove(e) {
+						if (isDragging) {
+							console.log(e);
+						}
+					}
+
+					function mouseDown(e) {
+						isDragging = true;
+						canvasElement.onmousemove = mouseMove;
+					}
+
+					function mouseUp() {
+						isDragging = false;
+						canvasElement.onmousemove = null;
+					}
+
+					canvasElement.onmousedown = mouseDown;
+					canvasElement.onmouseup = mouseUp;
 				}
 
 				function provideApi() {
@@ -55,14 +96,32 @@ angular.module('angular-coordinate', [])
 					return {
 						drawPoint: function(x,y) {
 							drawCircle(300, x, y, '#1BE07E');
+
 						}
 					}
 				}
 
 				function draw() {
+					drawXAxis();
+					drawYAxis();
+				}
+
+				function drawXAxis() {
+					ctx.beginPath();
+					ctx.moveTo(0, height / 2);
+					ctx.lineTo(width - 10, height / 2);
+					ctx.moveTo(width, height / 2);
+					ctx.lineTo(width - 10, height / 2 - 5);
+					ctx.lineTo(width - 10, height / 2 + 5);
+					ctx.lineTo(width, height / 2);
+					ctx.stroke();
+				}
+
+				function drawYAxis() {
 
 				}
 
+				initAttibutes();
 				initElement();
 				initListeners();
 				provideApi();
