@@ -13,5 +13,9 @@
     "coordinatesystem",
     "math"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.0.8",
+    "mathjs": "~0.13.0"
+  }
 }
