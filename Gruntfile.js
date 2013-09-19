@@ -7,7 +7,8 @@ module.exports = function(grunt) {
   var yoConfig = {
     livereload: 35729,
     src: 'src',
-    dist: 'dist'
+    dist: 'dist',
+    demo: 'demo',
   };
 
   // Livereload setup
@@ -85,7 +86,8 @@ module.exports = function(grunt) {
             return [
               lrSnippet,
               mountFolder(connect, '.tmp'),
-              mountFolder(connect, yoConfig.src)
+              mountFolder(connect, yoConfig.src),
+              mountFolder(connect, yoConfig.demo)
             ];
           }
         }
@@ -167,6 +169,18 @@ module.exports = function(grunt) {
         dest: '<%= yo.dist %>/angular-<%= pkg.name %>.min.js'
       }
     }
+  });
+
+  grunt.registerTask('server', function (target) {
+    if (target === 'dist') {
+      return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+    }
+
+    grunt.task.run([
+      'connect:livereload',
+      'open',
+      'watch'
+    ]);
   });
 
   grunt.registerTask('test', [
