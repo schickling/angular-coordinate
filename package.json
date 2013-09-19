@@ -20,6 +20,7 @@
   "bugs": {
     "url": "https://github.com/schickling/angular-coordinate/issues"
   },
+
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.3.0",
