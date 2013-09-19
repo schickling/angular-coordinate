@@ -115,8 +115,13 @@ angular.module('angular-coordinate', [])
 				}
 
 				function draw() {
+					reset();
 					drawXAxis();
 					drawYAxis();
+				}
+
+				function reset() {
+					ctx.clearRect(0, 0, width, height);
 				}
 
 				function drawXAxis() {
