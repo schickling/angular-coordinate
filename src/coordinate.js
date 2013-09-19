@@ -89,16 +89,16 @@ angular.module('angular-coordinate', [])
 				function api() {
 					function drawCircle(radius, x, y, color) {
 						ctx.beginPath();
-						console.log(x, y, radius);
 						ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
-						//ctx.fillStyle = color;
+						ctx.fillStyle = color;
+						ctx.fill();
 						ctx.closePath();
 					}
 
 					return {
 						drawPoint: function (x, y) {
-							drawCircle(300, x, y, '#1BE07E');
-
+							drawCircle(3, x, y, '#1BE07E');
+							drawCircle(9, x, y, 'rgba(0, 0, 0, 0.1)');
 						}
 					}
 				}
