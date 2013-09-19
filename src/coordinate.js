@@ -5,7 +5,6 @@ angular.module('angular-coordinate', [])
 		return {
 			restrict: 'E',
 			templateUrl: 'coordinate.html',
-			require: 'ngModel',
 			compile: function(element, attrs) {
 				function someApi(scope, element, attrs) {
 					return {
