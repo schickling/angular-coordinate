@@ -8,7 +8,26 @@ angular.module('angular-coordinate', [])
 			link: function (scope, element, attrs) {
 
 				function initElement() {
+					console.log(element);
+					var coordinateElement = element[0],
+						canvasElement = coordinateElement.getElementsByTagName('canvas')[0],
+						width = attrs.width || '700',
+						height = attrs.height || '400';
 
+					if (width.slice(-1) !== '%') {
+						width += 'px';
+					}
+
+					if (height.slice(-1) !== '%') {
+						height += 'px';
+					}
+
+					coordinateElement.style.width = canvasElement.style.width = width;
+					coordinateElement.style.height = canvasElement.style.height = height;
+					coordinateElement.style.display = 'block';
+
+
+					console.log(attrs);
 				}
 
 				function initListeners() {
