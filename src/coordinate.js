@@ -16,15 +16,17 @@ angular.module('angular-coordinate', [])
 					scaleY = attrs.scaleY || 100;
 
 					// width
-					width = attrs.width || '700';
-					if (width.slice(-1) !== '%') {
-						width += 'px';
+					width = parseInt(attrs.width, 10) || 700;
+					if (attrs.width.slice(-1) === '%') {
+						width *= 0.01;
+						width *= element[0].parentElement.offsetWidth;
 					}
 
 					// height
-					height = attrs.height || '400';
-					if (height.slice(-1) !== '%') {
-						height += 'px';
+					height = parseInt(attrs.height, 10) || 400;
+					if (attrs.height.slice(-1) === '%') {
+						height *= 0.01;
+						height *= element[0].parentElement.offsetHeight;
 					}
 
 					// center point (0, 0)
@@ -38,8 +40,8 @@ angular.module('angular-coordinate', [])
 					canvasElement = coordinateElement.getElementsByTagName('canvas')[0];
 					ctx = canvasElement.getContext('2d');
 
-					coordinateElement.style.width = canvasElement.style.width = width;
-					coordinateElement.style.height = canvasElement.style.height = height;
+					coordinateElement.style.width = canvasElement.style.width = width + 'px';
+					coordinateElement.style.height = canvasElement.style.height = height + 'px';
 					coordinateElement.style.display = 'block';
 
 				}
@@ -91,6 +93,22 @@ angular.module('angular-coordinate', [])
 				}
 
 				function draw() {
+					drawXAxis();
+					drawYAxis();
+				}
+
+				function drawXAxis() {
+					ctx.beginPath();
+					ctx.moveTo(0, height / 2);
+					ctx.lineTo(width - 10, height / 2);
+					ctx.moveTo(width, height / 2);
+					ctx.lineTo(width - 10, height / 2 - 5);
+					ctx.lineTo(width - 10, height / 2 + 5);
+					ctx.lineTo(width, height / 2);
+					ctx.stroke();
+				}
+
+				function drawYAxis() {
 
 				}
 
