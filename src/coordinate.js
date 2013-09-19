@@ -7,12 +7,14 @@ angular.module('angular-coordinate', [])
 			templateUrl: 'coordinate.html',
 			link: function (scope, element, attrs) {
 
+				var canvasElement, width, height;
+
 				function initElement() {
-					console.log(element);
-					var coordinateElement = element[0],
-						canvasElement = coordinateElement.getElementsByTagName('canvas')[0],
-						width = attrs.width || '700',
-						height = attrs.height || '400';
+					var coordinateElement = element[0];
+
+					width = attrs.width || '700';
+					height = attrs.height || '400';
+					canvasElement = coordinateElement.getElementsByTagName('canvas')[0];
 
 					if (width.slice(-1) !== '%') {
 						width += 'px';
@@ -26,8 +28,6 @@ angular.module('angular-coordinate', [])
 					coordinateElement.style.height = canvasElement.style.height = height;
 					coordinateElement.style.display = 'block';
 
-
-					console.log(attrs);
 				}
 
 				function initListeners() {
