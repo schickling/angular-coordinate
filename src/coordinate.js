@@ -33,7 +33,41 @@ angular.module('angular-coordinate', [])
 				}
 
 				function initListeners() {
+					initScrollListener();
+					initDragAndDropListener();
+				}
 
+				function initScrollListener() {
+
+				}
+
+				function initDragAndDropListener() {
+					// function myMove(e) {
+					// 	if (dragok) {
+					// 		x = e.pageX - canvasElement.offsetLeft;
+					// 		y = e.pageY - canvasElement.offsetTop;
+					// 	}
+					// }
+
+					// function myDown(e) {
+					// 	console.log(e);
+					// 	// if (e.pageX < x + 15 + canvasElement.offsetLeft && e.pageX > x - 15 +
+					// 	// 	canvasElement.offsetLeft && e.pageY < y + 15 + canvasElement.offsetTop &&
+					// 	// 	e.pageY > y - 15 + canvasElement.offsetTop) {
+					// 	// 	x = e.pageX - canvasElement.offsetLeft;
+					// 	// 	y = e.pageY - canvasElement.offsetTop;
+					// 	// 	dragok = true;
+					// 	// 	canvasElement.onmousemove = myMove;
+					// 	// }
+					// }
+
+					// function myUp() {
+					// 	// dragok = false;
+					// 	// canvasElement.onmousemove = null;
+					// }
+
+					// canvasElement.onmousedown = myDown;
+					// canvasElement.onmouseup = myUp;
 				}
 
 				function provideApi() {
