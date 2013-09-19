@@ -7,7 +7,7 @@ angular.module('angular-coordinate', [])
 			templateUrl: 'coordinate.html',
 			link: function (scope, element, attrs) {
 
-				var canvasElement, width, height, ctx, centerPoint, isDragging, scaleX, scaleY;
+				var canvasElement, width, height, ctx, centerPoint, isDragging, scaleX, scaleY, dragPoint;
 
 				function initAttibutes() {
 					console.log(element);
@@ -61,12 +61,14 @@ angular.module('angular-coordinate', [])
 
 					function mouseMove(e) {
 						if (isDragging) {
-							console.log(e);
+							drag(e);
+							dragPoint = [e.offsetX, e.offsetY];
 						}
 					}
 
 					function mouseDown(e) {
 						isDragging = true;
+						dragPoint = [e.offsetX, e.offsetY];
 						canvasElement.onmousemove = mouseMove;
 					}
 
@@ -101,6 +103,15 @@ angular.module('angular-coordinate', [])
 							drawCircle(9, x, y, 'rgba(0, 0, 0, 0.1)');
 						}
 					}
+				}
+
+				function drag(e) {
+					var diffX = e.offsetX - dragPoint[0],
+						diffY = e.offsetY - dragPoint[1];
+
+					centerPoint[0] += diffX;
+					centerPoint[1] += diffY;
+					draw();
 				}
 
 				function draw() {
