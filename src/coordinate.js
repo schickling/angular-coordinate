@@ -7,14 +7,16 @@ angular.module('angular-coordinate', [])
 			templateUrl: 'coordinate.html',
 			link: function (scope, element, attrs) {
 
-				var canvasElement, width, height;
+				var canvasElement, width, height, ctx, centerPoint;
 
 				function initElement() {
 					var coordinateElement = element[0];
 
 					width = attrs.width || '700';
 					height = attrs.height || '400';
+					centerPoint = [width/2, height/2];
 					canvasElement = coordinateElement.getElementsByTagName('canvas')[0];
+					ctx = canvasElement.getContext('2d');
 
 					if (width.slice(-1) !== '%') {
 						width += 'px';
@@ -35,16 +37,17 @@ angular.module('angular-coordinate', [])
 				}
 
 				function provideApi() {
-					function api () {
-						return {
-							someFunc: function() {
-								console.log(scope);
-							}
-						}
-					}
+
 					if (attrs.api) {
 						scope.$parent[attrs.api] = new api();
+					}
+				}
 
+				function api () {
+					return {
+						drawPoint: function(x,y) {
+							//ctx.
+						}
 					}
 				}
 
