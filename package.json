@@ -19,5 +19,22 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/schickling/angular-coordinate/issues"
+  },
+  "dependencies": {
+    "connect-livereload": "~0.3.0",
+    "load-grunt-tasks": "~0.1.0",
+    "grunt-karma": "~0.6.2",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-connect": "~0.5.0",
+    "grunt": "~0.4.1",
+    "karma-script-launcher": "~0.1.0",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-html2js-preprocessor": "~0.1.0",
+    "karma-requirejs": "~0.1.0",
+    "karma-coffee-preprocessor": "~0.1.0",
+    "karma-phantomjs-launcher": "~0.1.0",
+    "karma": "~0.10.2",
+    "karma-jasmine": "~0.1.3"
   }
 }
