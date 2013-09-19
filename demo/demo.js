@@ -3,7 +3,7 @@
 angular.module('coordinateApp', ['angular-coordinate'])
 	.controller('DemoCtrl', function ($scope) {
 		setTimeout(function () {
-			$scope.coordinate.someFunc();
+			$scope.coordinate.drawPoint(200,200);
 		},1000);
 
 

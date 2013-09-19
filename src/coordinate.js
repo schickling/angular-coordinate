@@ -44,9 +44,17 @@ angular.module('angular-coordinate', [])
 				}
 
 				function api () {
+					function drawCircle(radius, x, y, color) {
+						ctx.beginPath();
+						console.log(x, y, radius);
+						ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+						//ctx.fillStyle = color;
+						ctx.closePath();
+					}
+
 					return {
 						drawPoint: function(x,y) {
-							//ctx.
+							drawCircle(300, x, y, '#1BE07E');
 						}
 					}
 				}
