@@ -86,7 +86,7 @@ angular.module('angular-coordinate', [])
 					}
 				}
 
-				function api () {
+				function api() {
 					function drawCircle(radius, x, y, color) {
 						ctx.beginPath();
 						console.log(x, y, radius);
@@ -96,7 +96,7 @@ angular.module('angular-coordinate', [])
 					}
 
 					return {
-						drawPoint: function(x,y) {
+						drawPoint: function (x, y) {
 							drawCircle(300, x, y, '#1BE07E');
 
 						}
@@ -110,14 +110,16 @@ angular.module('angular-coordinate', [])
 
 				function drawXAxis() {
 					ctx.beginPath();
-					ctx.moveTo(0, height / 2);
-					ctx.lineTo(width - 10, height / 2);
+					ctx.moveTo(0, centerPoint[1]);
+					ctx.lineTo(width, centerPoint[1]);
 					ctx.stroke();
-					console.log(height, height /2);
 				}
 
 				function drawYAxis() {
-
+					ctx.beginPath();
+					ctx.moveTo(centerPoint[0], 0);
+					ctx.lineTo(centerPoint[0], height);
+					ctx.stroke();
 				}
 
 				initAttibutes();
