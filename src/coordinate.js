@@ -10,6 +10,7 @@ angular.module('angular-coordinate', [])
 				var canvasElement, width, height, ctx, centerPoint, isDragging, scaleX, scaleY;
 
 				function initAttibutes() {
+					console.log(element);
 
 					// scale
 					scaleX = attrs.scaleX || 100;
@@ -38,12 +39,13 @@ angular.module('angular-coordinate', [])
 					var coordinateElement = element[0];
 
 					canvasElement = coordinateElement.getElementsByTagName('canvas')[0];
+					canvasElement.width = width;
+					canvasElement.height = height;
 					ctx = canvasElement.getContext('2d');
 
-					coordinateElement.style.width = canvasElement.style.width = width + 'px';
-					coordinateElement.style.height = canvasElement.style.height = height + 'px';
+					coordinateElement.style.width = width + 'px';
+					coordinateElement.style.height = height + 'px';
 					coordinateElement.style.display = 'block';
-
 				}
 
 				function initListeners() {
@@ -110,11 +112,8 @@ angular.module('angular-coordinate', [])
 					ctx.beginPath();
 					ctx.moveTo(0, height / 2);
 					ctx.lineTo(width - 10, height / 2);
-					ctx.moveTo(width, height / 2);
-					ctx.lineTo(width - 10, height / 2 - 5);
-					ctx.lineTo(width - 10, height / 2 + 5);
-					ctx.lineTo(width, height / 2);
 					ctx.stroke();
+					console.log(height, height /2);
 				}
 
 				function drawYAxis() {
