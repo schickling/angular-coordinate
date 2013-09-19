@@ -35,7 +35,17 @@ angular.module('angular-coordinate', [])
 				}
 
 				function provideApi() {
+					function api () {
+						return {
+							someFunc: function() {
+								console.log(scope);
+							}
+						}
+					}
+					if (attrs.api) {
+						scope.$parent[attrs.api] = new api();
 
+					}
 				}
 
 				function draw() {
