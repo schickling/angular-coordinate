@@ -63,8 +63,9 @@ module.exports = function(grunt) {
       app: {
         files: [
           '<%= yo.src %>/{,*/}*.html',
+          '<%= yo.demo %>/{,*/}*.html',
           '{.tmp,<%= yo.src %>}/{,*/}*.css',
-          '{.tmp,<%= yo.src %>}/{,*/}*.js'
+          '{.tmp,<%= yo.src %>,<%= yo.demo %>}/{,*/}*.js'
         ],
         options: {
           livereload: yoConfig.livereload
