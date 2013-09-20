@@ -53,7 +53,11 @@ angular.module('angular-coordinate', [])
 				}
 
 				function initScrollListener() {
-
+					canvasElement.addEventListener('mousewheel', function (e) {
+						scaleX += e.wheelDelta;
+						scaleY += e.wheelDelta;
+						draw();
+					});
 				}
 
 				function initDragAndDropListener() {
