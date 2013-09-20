@@ -72,10 +72,10 @@ angular.module('angular-coordinate', [])
 				function initMouseMoveListener() {
 
 					function mouseMove(e) {
-
+						var offset = pixelToXY(e.offsetX, e.offsetY);
 						// update coordinate tracker
-						mouseTrackerElements[0].innerText = ((e.offsetX - centerPoint[0]) / scaleX).toFixed(2);
-						mouseTrackerElements[1].innerText = ((centerPoint[1] - e.offsetY) / scaleY).toFixed(2);
+						mouseTrackerElements[0].innerText = offset.x.toFixed(2);
+						mouseTrackerElements[1].innerText = offset.y.toFixed(2);
 
 						if (isDragging) {
 							drag(e);
