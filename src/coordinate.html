@@ -6,14 +6,16 @@
 
 	#angular-coordinate-position {
 		position: absolute;
-		top: 5px;
-		right: 5px;
+		top: 10px;
+		right: 10px;
 		color: #1B77E0;
 		font-size: 13px;
 	}
 
-	#angular-coordinate-position span {
-		padding-left: 5px;
+	#angular-coordinate-position div {
+		float: left;
+		width: 46px;
+		margin-left: 10px;
 	}
 
 	#angular-coordinate-buttons {
@@ -25,8 +27,8 @@
 <div id="angular-coordinate">
 	<canvas></canvas>
 	<div id="angular-coordinate-position">
-		<span>x: <b>0</b></span>
-		<span>y: <b>0</b></span>
+		<div>x: <b>0</b></div>
+		<div>y: <b>0</b></div>
 	</div>
 	<!-- <div id="angular-coordinate-buttons">
 		<button>Fullscreen</button>

@@ -7,7 +7,7 @@ angular.module('angular-coordinate', [])
 			templateUrl: 'coordinate.html',
 			link: function (scope, element, attrs) {
 
-				var canvasElement, width, height, ctx, centerPoint, isDragging, scaleX, scaleY, dragPoint;
+				var canvasElement, mouseTrackerElements, width, height, ctx, centerPoint, isDragging, scaleX, scaleY, dragPoint;
 
 				function initAttibutes() {
 
@@ -37,6 +37,7 @@ angular.module('angular-coordinate', [])
 				function initElement() {
 					var coordinateElement = element[0];
 
+					mouseTrackerElements = coordinateElement.getElementsByTagName('b');
 					canvasElement = coordinateElement.getElementsByTagName('canvas')[0];
 					canvasElement.width = width;
 					canvasElement.height = height;
@@ -49,6 +50,7 @@ angular.module('angular-coordinate', [])
 
 				function initListeners() {
 					initScrollListener();
+					initMouseMoveListener();
 					initDragAndDropListener();
 				}
 
@@ -61,24 +63,32 @@ angular.module('angular-coordinate', [])
 					});
 				}
 
-				function initDragAndDropListener() {
+				function initMouseMoveListener() {
 
 					function mouseMove(e) {
+
+						// update coordinate tracker
+						mouseTrackerElements[0].innerText = ((e.offsetX - centerPoint[0]) / scaleX).toFixed(2);
+						mouseTrackerElements[1].innerText = ((centerPoint[1] - e.offsetY) / scaleY).toFixed(2);
+
 						if (isDragging) {
 							drag(e);
 							dragPoint = [e.offsetX, e.offsetY];
 						}
 					}
 
+					canvasElement.onmousemove = mouseMove;
+				}
+
+				function initDragAndDropListener() {
+
 					function mouseDown(e) {
 						isDragging = true;
 						dragPoint = [e.offsetX, e.offsetY];
-						canvasElement.onmousemove = mouseMove;
 					}
 
 					function mouseUp() {
 						isDragging = false;
-						canvasElement.onmousemove = null;
 					}
 
 					canvasElement.onmousedown = mouseDown;
