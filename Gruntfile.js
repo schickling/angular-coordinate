@@ -8,7 +8,7 @@ module.exports = function(grunt) {
     livereload: 35729,
     src: 'src',
     dist: 'dist',
-    demo: 'demo',
+    demo: 'demo'
   };
 
   // Livereload setup
@@ -120,7 +120,7 @@ module.exports = function(grunt) {
       },
       test: {
         options: {
-          jshintrc: 'test/.jshintrc'
+        //  jshintrc: 'test/.jshintrc'
         },
         src: ['test/**/*.js']
       }

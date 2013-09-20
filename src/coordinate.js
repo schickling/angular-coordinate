@@ -104,12 +104,12 @@ angular.module('angular-coordinate', [])
 				function provideApi() {
 
 					if (attrs.api) {
-						api = new coordinateApi();
+						api = new CoordinateApi();
 						scope.$parent[attrs.api] = api;
 					}
 				}
 
-				function coordinateApi() {
+				function CoordinateApi() {
 					return {
 						addPoint: function (x, y) {
 							drawPoint(x, y);
@@ -120,48 +120,49 @@ angular.module('angular-coordinate', [])
 							drawFunction(functionString);
 							registerFunction(functionString);
 						}
-					}
+					};
 				}
 
 				function drawFunction(functionString) {
-					var scope = {x: 0}
-					var node = math.parse(functionString, scope);
+					var scope = {x: 0};
+					var node = window.math.parse(functionString, scope);
 
 					ctx.beginPath();
 					for (var x = 0; x < width; x = x + 1) {
 						scope.x = pixelToXY(x).x;
+						/*jshint evil:true */
 						var y = node.eval();
-						ctx.lineTo(x,XYtoPixel(0,y).y);
+						ctx.lineTo(x, xyToPixel(0,y).y);
 					}
 					ctx.stroke();
 				}
 
 				function drawPoint(x, y) {
-					drawCircle(3, x, y, '#1BE07E');
-					drawCircle(9, x, y, 'rgba(0, 0, 0, 0.1)');
-
 					function drawCircle(radius, x, y, color) {
-						var trans = XYtoPixel(x, y);
+						var trans = xyToPixel(x, y);
 						ctx.beginPath();
 						ctx.arc(trans.x, trans.y, radius, 0, 2 * Math.PI, true);
 						ctx.fillStyle = color;
 						ctx.fill();
 						ctx.closePath();
 					}
+
+					drawCircle(3, x, y, '#1BE07E');
+					drawCircle(9, x, y, 'rgba(0, 0, 0, 0.1)');
 				}
 
-				function XYtoPixel (x, y) {
+				function xyToPixel (x, y) {
 					return {
 						x: x * scaleX + centerPoint[0],
 						y: (-1) * y * scaleY + centerPoint[1]
-					}
+					};
 				}
 
 				function pixelToXY (pixelX, pixelY) {
 					return {
 						x: (pixelX - centerPoint[0]) / scaleX,
 						y: (pixelY - centerPoint[1]) / scaleY
-					}
+					};
 				}
 
 				function registerPoint (x, y) {
