@@ -23,6 +23,19 @@
 		top: 0;
 		left: 0;
 	}
+
+	#angular-coordinate-input {
+		padding: 10px 10px;
+		line-height: 20px;
+		font-size: 20px;
+		font-family: Arial;
+		height: 20px;
+		position: absolute;
+		bottom: 5px;
+		z-index: 2;
+		width: 100%;
+	}
+
 </style>
 <div id="angular-coordinate">
 	<canvas></canvas>
@@ -33,4 +46,5 @@
 	<!-- <div id="angular-coordinate-buttons">
 		<button>Fullscreen</button>
 	</div> -->
+	<form ng-submit="addFunction(input)" ng-show='showInput'><input type="text" ng-model="input" id="angular-coordinate-input" ></form>
 </div>
