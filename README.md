@@ -3,8 +3,15 @@ angular-coordinate
 
 Coordiante system for AngularJS
 
+## Installation
+```sh
+$ bower install angular-coordinate
+```
 
-## TODO
+## Usage
+```html
+<coordinate api="coordinate" width="100%" height="100%"></coordinate>
+```
 
 ### attributes
 * width (minimum?)
@@ -14,6 +21,10 @@ Coordiante system for AngularJS
 * fullscreen
 * show-input
 * api
+
+
+## Coming soon...
+* Smarter scaling on zoom
 
 ### API
 * addPoint(x, y)
