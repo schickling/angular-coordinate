@@ -161,6 +161,32 @@ module.exports = function(grunt) {
         dest: '<%= yo.dist %>/angular-<%= pkg.name %>.js'
       }
     },
+    copy: {
+      dist: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: './demo',
+          dest: './dist',
+          src: [
+            '**'
+          ]
+        }, {
+          expand: true,
+          cwd: './src',
+          dest: './dist',
+          src: [
+            '**'
+          ]
+        }]
+      },
+      styles: {
+        expand: true,
+        cwd: '<%= yeoman.app %>/styles',
+        dest: '.tmp/styles/',
+        src: '{,*/}*.css'
+      }
+    },
     uglify: {
       options: {
         banner: '<%= meta.banner %>'
@@ -169,6 +195,12 @@ module.exports = function(grunt) {
         src: '<%= concat.dist.dest %>',
         dest: '<%= yo.dist %>/angular-<%= pkg.name %>.min.js'
       }
+    },
+    'gh-pages': {
+      options: {
+        base: 'demo'
+      },
+      src: '**'
     }
   });
 
@@ -191,6 +223,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'copy:dist',
     'less:dist',
     'ngmin:dist',
     'uglify:dist'
@@ -201,6 +234,13 @@ module.exports = function(grunt) {
     'bump-only',
     'dist',
     'bump-commit'
+  ]);
+
+  grunt.registerTask('publish', [
+    'jshint',
+    //'test',
+    'build',
+    'gh-pages'
   ]);
 
   grunt.registerTask('default', ['build']);
