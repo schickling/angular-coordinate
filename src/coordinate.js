@@ -10,7 +10,7 @@ angular.module('angular-coordinate', [])
 
 				var canvasElement, width, height, ctx, centerPoint,
 						isDragging, scaleX, scaleY, dragPoint, api,
-						mouseTrackerElements,
+						mouseTrackerElements, showInput,
 						points = [],
 						functions = [];
 
@@ -38,6 +38,9 @@ angular.module('angular-coordinate', [])
 					// center point (0, 0)
 					centerPoint = [width / 2, height / 2];
 
+					showInput = attrs.hasOwnProperty('showInput');
+					// for the form
+					scope.showInput = showInput;
 				}
 
 				function initElement() {
@@ -106,24 +109,25 @@ angular.module('angular-coordinate', [])
 					if (attrs.api) {
 						api = new CoordinateApi();
 						scope.$parent[attrs.api] = api;
+						scope.addFunction = api.addFunction;
 					}
 				}
 
 				function CoordinateApi() {
 					return {
 						addPoint: function (x, y) {
-							drawPoint(x, y);
 							//register the point for redrawing when moving
 							registerPoint(x, y);
+							draw();
 						},
 						addFunction: function (functionString) {
-							drawFunction(functionString);
 							registerFunction(functionString);
+							draw();
 						}
 					};
 				}
 
-				function drawFunction(functionString) {
+				function drawFunction(functionString, color) {
 					var scope = {x: 0};
 					var node = window.math.parse(functionString, scope);
 
@@ -134,6 +138,8 @@ angular.module('angular-coordinate', [])
 						var y = node.eval();
 						ctx.lineTo(x, xyToPixel(0,y).y);
 					}
+					ctx.strokeStyle = color;
+					ctx.lineWidth = 2;
 					ctx.stroke();
 				}
 
@@ -181,9 +187,11 @@ angular.module('angular-coordinate', [])
 				}
 
 				function drawFunctions() {
+					var colors = ['#1B3E59', '#730202', '#FFAC00', '#0C5953'];
 					for (var i = 0, max = functions.length; i < max; i = i + 1) {
 						var func = functions[i];
-						drawFunction(func);
+						var color = colors[i % (colors.length - 1)];
+						drawFunction(func, color);
 					}
 				}
 
