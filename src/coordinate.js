@@ -141,6 +141,7 @@ angular.module('angular-coordinate', [])
 						ctx.moveTo(centerPoint[0] + product, centerPoint[1] - 4);
 						ctx.lineTo(centerPoint[0] + product, centerPoint[1] + 4);
 					}
+					ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
 					ctx.stroke();
 
 					// mini ticks
@@ -158,8 +159,35 @@ angular.module('angular-coordinate', [])
 
 				function drawYAxis() {
 					ctx.beginPath();
+
+					// axis
 					ctx.moveTo(centerPoint[0], 0);
 					ctx.lineTo(centerPoint[0], height);
+
+					// big ticks
+					var numberOfTicks = height / scaleY,
+						currentTick, miniTick, product;
+
+					for (currentTick = 1; currentTick <= numberOfTicks; currentTick++) {
+						product = currentTick * scaleY;
+						ctx.moveTo(centerPoint[0] - 4, centerPoint[1] - product);
+						ctx.lineTo(centerPoint[0] + 4, centerPoint[1] - product);
+						ctx.moveTo(centerPoint[0] - 4, centerPoint[1] + product);
+						ctx.lineTo(centerPoint[0] + 4, centerPoint[1] + product);
+					}
+					ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
+					ctx.stroke();
+
+					// mini ticks
+					ctx.beginPath();
+					for (miniTick = 0; miniTick <= numberOfTicks; miniTick += 0.1) {
+						product = miniTick * scaleY;
+						ctx.moveTo(centerPoint[0] - 2, centerPoint[1] - product);
+						ctx.lineTo(centerPoint[0] + 2, centerPoint[1] - product);
+						ctx.moveTo(centerPoint[0] - 2, centerPoint[1] + product);
+						ctx.lineTo(centerPoint[0] + 2, centerPoint[1] + product);
+					}
+					ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 					ctx.stroke();
 				}
 
