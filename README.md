@@ -3,6 +3,8 @@ angular-coordinate
 
 Coordiante system for AngularJS
 
+## [Demo](http://schickling.github.io/angular-coordinate/)
+
 ## Installation
 ```sh
 $ bower install angular-coordinate
