@@ -77,6 +77,7 @@ angular.module('angular-coordinate', [])
 						}
 
 						e.preventDefault();
+						updateCoordinateTracker(e);
 						draw();
 					});
 				}
@@ -84,10 +85,7 @@ angular.module('angular-coordinate', [])
 				function initMouseMoveListener() {
 
 					function mouseMove(e) {
-						// update coordinate tracker
-						var offset = pixelToXY(e.offsetX, e.offsetY);
-						mouseTrackerElements[0].innerText = offset.x.toFixed(2);
-						mouseTrackerElements[1].innerText = -offset.y.toFixed(2);
+						updateCoordinateTracker(e);
 
 						if (isDragging) {
 							drag(e);
@@ -96,6 +94,13 @@ angular.module('angular-coordinate', [])
 					}
 
 					canvasElement.onmousemove = mouseMove;
+				}
+
+				function updateCoordinateTracker(e) {
+					// update coordinate tracker
+					var offset = pixelToXY(e.offsetX, e.offsetY);
+					mouseTrackerElements[0].innerText = offset.x.toFixed(2);
+					mouseTrackerElements[1].innerText = -offset.y.toFixed(2);
 				}
 
 				function initDragAndDropListener() {
