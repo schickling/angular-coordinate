@@ -7,10 +7,12 @@ angular.module('angular-coordinate', [])
 			templateUrl: 'coordinate.html',
 			link: function (scope, element, attrs) {
 
-				var canvasElement, width, height, ctx, centerPoint, isDragging, scaleX, scaleY, dragPoint;
+				var canvasElement, width, height, ctx, centerPoint,
+						isDragging, scaleX, scaleY, dragPoint, api,
+						points = [],
+						functions = [];
 
 				function initAttibutes() {
-					console.log(element);
 
 					// scale
 					scaleX = attrs.scaleX || 100;
@@ -84,24 +86,85 @@ angular.module('angular-coordinate', [])
 				function provideApi() {
 
 					if (attrs.api) {
-						scope.$parent[attrs.api] = new api();
+						api = new coordinateApi();
+						scope.$parent[attrs.api] = api;
 					}
 				}
 
-				function api() {
+				function coordinateApi() {
+					return {
+						addPoint: function (x, y) {
+							drawPoint(x, y);
+							//register the point for redrawing when moving
+							registerPoint(x, y);
+						},
+						addFunction: function (functionString) {
+							drawFunction(functionString);
+							registerFunction(functionString);
+						}
+					}
+				}
+
+				function drawFunction(functionString) {
+					var scope = {x: 0}
+					var node = math.parse(functionString, scope);
+
+					ctx.beginPath();
+					for (var x = 0; x < width; x = x + 1) {
+						scope.x = pixelToXY(x).x;
+						var y = node.eval();
+						ctx.lineTo(x,XYtoPixel(0,y).y);
+					}
+					ctx.stroke();
+				}
+
+				function drawPoint(x, y) {
+					drawCircle(3, x, y, '#1BE07E');
+					drawCircle(9, x, y, 'rgba(0, 0, 0, 0.1)');
+
 					function drawCircle(radius, x, y, color) {
+						var trans = XYtoPixel(x, y);
 						ctx.beginPath();
-						ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+						ctx.arc(trans.x, trans.y, radius, 0, 2 * Math.PI, true);
 						ctx.fillStyle = color;
 						ctx.fill();
 						ctx.closePath();
 					}
+				}
 
+				function XYtoPixel (x, y) {
 					return {
-						drawPoint: function (x, y) {
-							drawCircle(3, x, y, '#1BE07E');
-							drawCircle(9, x, y, 'rgba(0, 0, 0, 0.1)');
-						}
+						x: x * scaleX + centerPoint[0],
+						y: (-1) * y * scaleY + centerPoint[1]
+					}
+				}
+
+				function pixelToXY (pixelX, pixelY) {
+					return {
+						x: (pixelX - centerPoint[0]) / scaleX,
+						y: (pixelY - centerPoint[1]) / scaleY
+					}
+				}
+
+				function registerPoint (x, y) {
+					points.push([x,y]);
+				}
+
+				function drawPoints() {
+					for (var i = 0, max = points.length; i < max; i = i + 1) {
+						var point = points[i];
+						drawPoint(point[0], point[1]);
+					}
+				}
+
+				function registerFunction (functionString) {
+					functions.push(functionString);
+				}
+
+				function drawFunctions() {
+					for (var i = 0, max = functions.length; i < max; i = i + 1) {
+						var func = functions[i];
+						drawFunction(func);
 					}
 				}
 
@@ -118,6 +181,8 @@ angular.module('angular-coordinate', [])
 					reset();
 					drawXAxis();
 					drawYAxis();
+					drawPoints();
+					drawFunctions();
 				}
 
 				function reset() {
