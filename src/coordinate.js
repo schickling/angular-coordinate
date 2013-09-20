@@ -10,7 +10,6 @@ angular.module('angular-coordinate', [])
 				var canvasElement, width, height, ctx, centerPoint, isDragging, scaleX, scaleY, dragPoint;
 
 				function initAttibutes() {
-					console.log(element);
 
 					// scale
 					scaleX = attrs.scaleX || 100;
@@ -126,8 +125,34 @@ angular.module('angular-coordinate', [])
 
 				function drawXAxis() {
 					ctx.beginPath();
+
+					// axis
 					ctx.moveTo(0, centerPoint[1]);
 					ctx.lineTo(width, centerPoint[1]);
+
+					// big ticks
+					var numberOfTicks = width / scaleX,
+						currentTick, miniTick, product;
+
+					for (currentTick = 1; currentTick <= numberOfTicks; currentTick++) {
+						product = currentTick * scaleX;
+						ctx.moveTo(centerPoint[0] - product, centerPoint[1] - 4);
+						ctx.lineTo(centerPoint[0] - product, centerPoint[1] + 4);
+						ctx.moveTo(centerPoint[0] + product, centerPoint[1] - 4);
+						ctx.lineTo(centerPoint[0] + product, centerPoint[1] + 4);
+					}
+					ctx.stroke();
+
+					// mini ticks
+					ctx.beginPath();
+					for (miniTick = 0; miniTick <= numberOfTicks; miniTick += 0.1) {
+						product = miniTick * scaleX;
+						ctx.moveTo(centerPoint[0] - product, centerPoint[1] - 2);
+						ctx.lineTo(centerPoint[0] - product, centerPoint[1] + 2);
+						ctx.moveTo(centerPoint[0] + product, centerPoint[1] - 2);
+						ctx.lineTo(centerPoint[0] + product, centerPoint[1] + 2);
+					}
+					ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 					ctx.stroke();
 				}
 
