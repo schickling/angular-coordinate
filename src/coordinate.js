@@ -54,8 +54,9 @@ angular.module('angular-coordinate', [])
 
 				function initScrollListener() {
 					canvasElement.addEventListener('mousewheel', function (e) {
-						scaleX += e.wheelDelta;
-						scaleY += e.wheelDelta;
+						e.preventDefault();
+						scaleX += e.wheelDelta * 0.05;
+						scaleY += e.wheelDelta * 0.05;
 						draw();
 					});
 				}
