@@ -15,21 +15,12 @@ $ bower install angular-coordinate
 
 ## Usage
 
-### View
+#### View
 ```html
 <coordinate api="coordinate" width="100%" height="100%"></coordinate>
 ```
 
-### Controller
-You need to provide a function called `coordinate` in your scope to access the API
-```js
-$scope.coordinate = function (coordinate) {
-    coordinate.addPoint(1, 1);
-    coordinate.addFunction('x^3');
-};
-```
-
-### Available attributes
+##### Available attributes
 * width
 * height
 * scaleX
@@ -38,7 +29,16 @@ $scope.coordinate = function (coordinate) {
 * show-input
 * api
 
-### API
+#### Controller
+You need to provide a function called `coordinate` in your scope to access the API
+```js
+$scope.coordinate = function (coordinate) {
+    coordinate.addPoint(1, 1);
+    coordinate.addFunction('x^3');
+};
+```
+
+##### API
 *TODO*
 
 ## Coming soon...
