@@ -87,9 +87,9 @@ angular.module('angular-coordinate', ['angular-coordinate.html']).directive('coo
         canvasElement.onmouseup = mouseUp;
       }
       function provideApi() {
-        var apiAttr = attrs.api || 'coordinate', api = new CoordinateApi();
-        scope.$parent[apiAttr] = api;
-        scope.addFunction = api.addFunction;
+        if (scope.coordinate) {
+          scope.coordinate(new CoordinateApi());
+        }
       }
       function CoordinateApi() {
         return {
