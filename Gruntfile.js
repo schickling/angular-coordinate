@@ -8,7 +8,8 @@ module.exports = function(grunt) {
     livereload: 35729,
     src: 'src',
     dist: 'dist',
-    demo: 'demo'
+    demo: 'demo',
+    template: 'template'
   };
 
   // Livereload setup
@@ -143,7 +144,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['<%= yo.src %>/<%= pkg.name %>.js'],
-        dest: '<%= yo.dist %>/angular-<%= pkg.name %>.js'
+        dest: '<%= yo.dist %>/<%= pkg.name %>.js'
       }
       // dist: {
       //   files: {
@@ -151,14 +152,28 @@ module.exports = function(grunt) {
       //   }
       // }
     },
+    html2js: {
+      dist: {
+        options: {
+          module: null, // no bundle module for all the html2js templates
+          base: '.'
+        },
+        files: [{
+          expand: true,
+          src: ['template/*.html'],
+          ext: '.html.js'
+        }]
+      }
+    },
     concat: {
       options: {
         banner: '<%= meta.banner %>',
         stripBanners: true
       },
       dist: {
-        src: ['<%= yo.src %>/<%= pkg.name %>.js'],
-        dest: '<%= yo.dist %>/angular-<%= pkg.name %>.js'
+        src: ['<%= yo.src %>/*.js',
+              '<%= yo.template %>/*.html.js'],
+        dest: '<%= yo.dist %>/<%= pkg.name %>.js'
       }
     },
     copy: {
@@ -167,13 +182,6 @@ module.exports = function(grunt) {
           expand: true,
           dot: true,
           cwd: './demo',
-          dest: './dist',
-          src: [
-            '**'
-          ]
-        }, {
-          expand: true,
-          cwd: './src',
           dest: './dist',
           src: [
             '**'
@@ -226,6 +234,8 @@ module.exports = function(grunt) {
     'copy:dist',
     'less:dist',
     'ngmin:dist',
+    'html2js',
+    'concat',
     'uglify:dist'
   ]);
 
