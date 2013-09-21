@@ -2,5 +2,6 @@ bower_components
 node_modules
 .DS_Store
 .tern-port
-.grunt/grunt-gh-pages/gh-pages/src/
+.grunt
+.gh-pages
 template/*.js
