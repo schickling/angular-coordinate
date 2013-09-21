@@ -1,8 +1,8 @@
 /**
  * angular-coordinate
  * @version v0.1.0 - 2013-09-21
- * @link 
- * @author  <>
+ * @link https://github.com/schickling/angular-coordinate.git
+ * @author Johannes Schickling <schickling.j@gmail.com>, Tim Suchanek <tim.suchanek@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
 'use strict';
@@ -316,8 +316,8 @@ angular.module('angular-coordinate', [])
 			}
 		};
 	});
-angular.module("template/coordinate.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("template/coordinate.html",
+angular.module("coordinate.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("coordinate.html",
     "<style type=\"text/css\">\n" +
     "	#angular-coordinate {\n" +
     "		display: block;\n" +
@@ -366,7 +366,9 @@ angular.module("template/coordinate.html", []).run(["$templateCache", function($
     "	<!-- <div id=\"angular-coordinate-buttons\">\n" +
     "		<button>Fullscreen</button>\n" +
     "	</div> -->\n" +
-    "	<form ng-submit=\"addFunction(input)\" ng-show='showInput'><input type=\"text\" ng-model=\"input\" id=\"angular-coordinate-input\" ></form>\n" +
+    "	<form ng-submit=\"addFunction(input)\" ng-show='showInput'>\n" +
+    "		<input type=\"text\" ng-model=\"input\" id=\"angular-coordinate-input\" placeholder='Type in some function like \"x\"'>\n" +
+    "	</form>\n" +
     "</div>\n" +
     "");
 }]);
