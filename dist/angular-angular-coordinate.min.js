@@ -1,6 +1,6 @@
 /**
  * angular-coordinate
- * @version v0.1.0 - 2013-09-21
+ * @version v0.1.1 - 2013-09-21
  * @link https://github.com/schickling/angular-coordinate.git
  * @author Johannes Schickling <schickling.j@gmail.com>, Tim Suchanek <tim.suchanek@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
