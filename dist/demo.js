@@ -8,6 +8,7 @@ angular.module('coordinateApp', ['angular-coordinate'])
 				$scope.coordinate.addPoint(point[0],point[1]);
 			});
 			$scope.coordinate.addFunction('x^2');
+			$scope.coordinate.addFunction('x^3');
 		},1000);
 
 

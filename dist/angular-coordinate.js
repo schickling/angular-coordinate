@@ -1,54 +1,25 @@
+/**
+ * angular-coordinate
+ * @version v0.1.0 - 2013-09-21
+ * @link 
+ * @author  <>
+ * @license MIT License, http://www.opensource.org/licenses/MIT
+ */
 'use strict';
 
 angular.module('angular-coordinate', [])
 	.directive('coordinate', function () {
 		return {
 			restrict: 'E',
-			template: '<style type="text/css">
-	#angular-coordinate {
-		display: block;
-		position: relative;
-	}
-
-	#angular-coordinate-position {
-		position: absolute;
-		top: 10px;
-		right: 10px;
-		color: #1B77E0;
-		font-size: 13px;
-	}
-
-	#angular-coordinate-position div {
-		float: left;
-		width: 46px;
-		margin-left: 10px;
-	}
-
-	#angular-coordinate-buttons {
-		position: absolute;
-		top: 0;
-		left: 0;
-	}
-</style>
-<div id="angular-coordinate">
-	<canvas></canvas>
-	<div id="angular-coordinate-position">
-		<div>x: <b>0</b></div>
-		<div>y: <b>0</b></div>
-	</div>
-	<!-- <div id="angular-coordinate-buttons">
-		<button>Fullscreen</button>
-	</div> -->
-</div>
-',
+			templateUrl: 'coordinate.html',
 			link: function (scope, element, attrs) {
 
 
 				var canvasElement, width, height, ctx, centerPoint,
-						isDragging, scaleX, scaleY, dragPoint, api,
-						mouseTrackerElements,
-						points = [],
-						functions = [];
+					isDragging, scaleX, scaleY, dragPoint, api,
+					mouseTrackerElements, showInput,
+					points = [],
+					functions = [];
 
 
 				function initAttibutes() {
@@ -74,6 +45,9 @@ angular.module('angular-coordinate', [])
 					// center point (0, 0)
 					centerPoint = [width / 2, height / 2];
 
+					showInput = attrs.hasOwnProperty('showInput');
+					// for the form
+					scope.showInput = showInput;
 				}
 
 				function initElement() {
@@ -98,9 +72,19 @@ angular.module('angular-coordinate', [])
 
 				function initScrollListener() {
 					canvasElement.addEventListener('mousewheel', function (e) {
+
+						var ratio = scaleX / scaleY,
+							minimumScale = 1.05,
+							newScaleX = scaleX + e.wheelDelta * 0.05 * ratio,
+							newScaleY = scaleY + e.wheelDelta * 0.05;
+
+						if (newScaleX > minimumScale && newScaleY > minimumScale) {
+							scaleX = newScaleX;
+							scaleY = newScaleY;
+						}
+
 						e.preventDefault();
-						scaleX += e.wheelDelta * 0.05;
-						scaleY += e.wheelDelta * 0.05;
+						updateCoordinateTracker(e);
 						draw();
 					});
 				}
@@ -108,10 +92,7 @@ angular.module('angular-coordinate', [])
 				function initMouseMoveListener() {
 
 					function mouseMove(e) {
-						var offset = pixelToXY(e.offsetX, e.offsetY);
-						// update coordinate tracker
-						mouseTrackerElements[0].innerText = offset.x.toFixed(2);
-						mouseTrackerElements[1].innerText = offset.y.toFixed(2);
+						updateCoordinateTracker(e);
 
 						if (isDragging) {
 							drag(e);
@@ -120,6 +101,13 @@ angular.module('angular-coordinate', [])
 					}
 
 					canvasElement.onmousemove = mouseMove;
+				}
+
+				function updateCoordinateTracker(e) {
+					// update coordinate tracker
+					var offset = pixelToXY(e.offsetX, e.offsetY);
+					mouseTrackerElements[0].innerText = offset.x.toFixed(2);
+					mouseTrackerElements[1].innerText = -offset.y.toFixed(2);
 				}
 
 				function initDragAndDropListener() {
@@ -142,25 +130,28 @@ angular.module('angular-coordinate', [])
 					if (attrs.api) {
 						api = new CoordinateApi();
 						scope.$parent[attrs.api] = api;
+						scope.addFunction = api.addFunction;
 					}
 				}
 
 				function CoordinateApi() {
 					return {
 						addPoint: function (x, y) {
-							drawPoint(x, y);
 							//register the point for redrawing when moving
 							registerPoint(x, y);
+							draw();
 						},
 						addFunction: function (functionString) {
-							drawFunction(functionString);
 							registerFunction(functionString);
+							draw();
 						}
 					};
 				}
 
-				function drawFunction(functionString) {
-					var scope = {x: 0};
+				function drawFunction(functionString, color) {
+					var scope = {
+						x: 0
+					};
 					var node = window.math.parse(functionString, scope);
 
 					ctx.beginPath();
@@ -168,8 +159,10 @@ angular.module('angular-coordinate', [])
 						scope.x = pixelToXY(x).x;
 						/*jshint evil:true */
 						var y = node.eval();
-						ctx.lineTo(x, xyToPixel(0,y).y);
+						ctx.lineTo(x, xyToPixel(0, y).y);
 					}
+					ctx.strokeStyle = color;
+					ctx.lineWidth = 2;
 					ctx.stroke();
 				}
 
@@ -187,22 +180,22 @@ angular.module('angular-coordinate', [])
 					drawCircle(9, x, y, 'rgba(0, 0, 0, 0.1)');
 				}
 
-				function xyToPixel (x, y) {
+				function xyToPixel(x, y) {
 					return {
 						x: x * scaleX + centerPoint[0],
 						y: (-1) * y * scaleY + centerPoint[1]
 					};
 				}
 
-				function pixelToXY (pixelX, pixelY) {
+				function pixelToXY(pixelX, pixelY) {
 					return {
 						x: (pixelX - centerPoint[0]) / scaleX,
 						y: (pixelY - centerPoint[1]) / scaleY
 					};
 				}
 
-				function registerPoint (x, y) {
-					points.push([x,y]);
+				function registerPoint(x, y) {
+					points.push([x, y]);
 				}
 
 				function drawPoints() {
@@ -212,14 +205,16 @@ angular.module('angular-coordinate', [])
 					}
 				}
 
-				function registerFunction (functionString) {
+				function registerFunction(functionString) {
 					functions.push(functionString);
 				}
 
 				function drawFunctions() {
+					var colors = ['#1B3E59', '#730202', '#FFAC00', '#0C5953'];
 					for (var i = 0, max = functions.length; i < max; i = i + 1) {
 						var func = functions[i];
-						drawFunction(func);
+						var color = colors[i % (colors.length - 1)];
+						drawFunction(func, color);
 					}
 				}
 
@@ -321,3 +316,57 @@ angular.module('angular-coordinate', [])
 			}
 		};
 	});
+angular.module("template/coordinate.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("template/coordinate.html",
+    "<style type=\"text/css\">\n" +
+    "	#angular-coordinate {\n" +
+    "		display: block;\n" +
+    "		position: relative;\n" +
+    "	}\n" +
+    "\n" +
+    "	#angular-coordinate-position {\n" +
+    "		position: absolute;\n" +
+    "		top: 10px;\n" +
+    "		right: 10px;\n" +
+    "		color: #1B77E0;\n" +
+    "		font-size: 13px;\n" +
+    "	}\n" +
+    "\n" +
+    "	#angular-coordinate-position div {\n" +
+    "		float: left;\n" +
+    "		width: 58px;\n" +
+    "		margin-left: 10px;\n" +
+    "	}\n" +
+    "\n" +
+    "	#angular-coordinate-buttons {\n" +
+    "		position: absolute;\n" +
+    "		top: 0;\n" +
+    "		left: 0;\n" +
+    "	}\n" +
+    "\n" +
+    "	#angular-coordinate-input {\n" +
+    "		padding: 10px 10px;\n" +
+    "		line-height: 20px;\n" +
+    "		font-size: 20px;\n" +
+    "		font-family: Arial;\n" +
+    "		height: 20px;\n" +
+    "		position: absolute;\n" +
+    "		bottom: 5px;\n" +
+    "		z-index: 2;\n" +
+    "		width: 100%;\n" +
+    "	}\n" +
+    "\n" +
+    "</style>\n" +
+    "<div id=\"angular-coordinate\">\n" +
+    "	<canvas></canvas>\n" +
+    "	<div id=\"angular-coordinate-position\">\n" +
+    "		<div>x: <b>0</b></div>\n" +
+    "		<div>y: <b>0</b></div>\n" +
+    "	</div>\n" +
+    "	<!-- <div id=\"angular-coordinate-buttons\">\n" +
+    "		<button>Fullscreen</button>\n" +
+    "	</div> -->\n" +
+    "	<form ng-submit=\"addFunction(input)\" ng-show='showInput'><input type=\"text\" ng-model=\"input\" id=\"angular-coordinate-input\" ></form>\n" +
+    "</div>\n" +
+    "");
+}]);
