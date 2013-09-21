@@ -4,7 +4,7 @@ angular.module('angular-coordinate', [])
 	.directive('coordinate', function () {
 		return {
 			restrict: 'E',
-			templateUrl: 'coordinate.html',
+			templateUrl: 'angular-coordinate.html',
 			link: function (scope, element, attrs) {
 
 
