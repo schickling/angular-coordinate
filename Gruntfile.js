@@ -29,8 +29,8 @@ module.exports = function(grunt) {
       banner: '/**\n' +
       ' * <%= pkg.name %>\n' +
       ' * @version v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      ' * @link <%= pkg.homepage %>\n' +
-      ' * @author <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
+      ' * @link <%= pkg.repository.url %>\n' +
+      ' * @author <%= pkg.author %>\n' +
       ' * @license MIT License, http://www.opensource.org/licenses/MIT\n' +
       ' */\n'
     },
@@ -89,7 +89,8 @@ module.exports = function(grunt) {
               lrSnippet,
               mountFolder(connect, '.tmp'),
               mountFolder(connect, yoConfig.src),
-              mountFolder(connect, yoConfig.demo)
+              mountFolder(connect, yoConfig.demo),
+              mountFolder(connect, yoConfig.template)
             ];
           }
         }
