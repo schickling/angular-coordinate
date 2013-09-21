@@ -16,7 +16,7 @@ angular.module('angular-coordinate', [])
 
 
 				var canvasElement, width, height, ctx, centerPoint,
-					isDragging, scaleX, scaleY, dragPoint, api,
+					isDragging, scaleX, scaleY, dragPoint,
 					mouseTrackerElements, showInput,
 					points = [],
 					functions = [];
@@ -30,14 +30,14 @@ angular.module('angular-coordinate', [])
 
 					// width
 					width = parseInt(attrs.width, 10) || 700;
-					if (attrs.width.slice(-1) === '%') {
+					if (attrs.width && attrs.width.slice(-1) === '%') {
 						width *= 0.01;
 						width *= element[0].parentElement.offsetWidth;
 					}
 
 					// height
 					height = parseInt(attrs.height, 10) || 400;
-					if (attrs.height.slice(-1) === '%') {
+					if (attrs.height && attrs.height.slice(-1) === '%') {
 						height *= 0.01;
 						height *= element[0].parentElement.offsetHeight;
 					}
@@ -126,12 +126,11 @@ angular.module('angular-coordinate', [])
 				}
 
 				function provideApi() {
-
-					if (attrs.api) {
+					var apiAttr = attrs.api || 'coordinate',
 						api = new CoordinateApi();
-						scope.$parent[attrs.api] = api;
-						scope.addFunction = api.addFunction;
-					}
+
+					scope.$parent[apiAttr] = api;
+					scope.addFunction = api.addFunction;
 				}
 
 				function CoordinateApi() {
@@ -316,6 +315,63 @@ angular.module('angular-coordinate', [])
 			}
 		};
 	});
+angular.module("angular-coordinate.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("angular-coordinate.html",
+    "<style type=\"text/css\">\n" +
+    "	#angular-coordinate {\n" +
+    "		display: block;\n" +
+    "		position: relative;\n" +
+    "	}\n" +
+    "\n" +
+    "	#angular-coordinate-position {\n" +
+    "		position: absolute;\n" +
+    "		top: 10px;\n" +
+    "		right: 10px;\n" +
+    "		color: #1B77E0;\n" +
+    "		font-size: 13px;\n" +
+    "	}\n" +
+    "\n" +
+    "	#angular-coordinate-position div {\n" +
+    "		float: left;\n" +
+    "		width: 58px;\n" +
+    "		margin-left: 10px;\n" +
+    "	}\n" +
+    "\n" +
+    "	#angular-coordinate-buttons {\n" +
+    "		position: absolute;\n" +
+    "		top: 0;\n" +
+    "		left: 0;\n" +
+    "	}\n" +
+    "\n" +
+    "	#angular-coordinate-input {\n" +
+    "		padding: 10px 10px;\n" +
+    "		line-height: 20px;\n" +
+    "		font-size: 20px;\n" +
+    "		font-family: Arial;\n" +
+    "		height: 20px;\n" +
+    "		position: absolute;\n" +
+    "		bottom: 5px;\n" +
+    "		z-index: 2;\n" +
+    "		width: 100%;\n" +
+    "	}\n" +
+    "\n" +
+    "</style>\n" +
+    "<div id=\"angular-coordinate\">\n" +
+    "	<canvas></canvas>\n" +
+    "	<div id=\"angular-coordinate-position\">\n" +
+    "		<div>x: <b>0</b></div>\n" +
+    "		<div>y: <b>0</b></div>\n" +
+    "	</div>\n" +
+    "	<!-- <div id=\"angular-coordinate-buttons\">\n" +
+    "		<button>Fullscreen</button>\n" +
+    "	</div> -->\n" +
+    "	<form ng-submit=\"addFunction(input)\" ng-show='showInput'>\n" +
+    "		<input type=\"text\" ng-model=\"input\" id=\"angular-coordinate-input\" placeholder='Type in some function like \"x\"'>\n" +
+    "	</form>\n" +
+    "</div>\n" +
+    "");
+}]);
+
 angular.module("coordinate.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("coordinate.html",
     "<style type=\"text/css\">\n" +
