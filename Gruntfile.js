@@ -211,7 +211,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: '<%= concat.dist.dest %>',
-        dest: 'angular-<%= pkg.name %>.min.js'
+        dest: '<%= pkg.name %>.min.js'
       },
       'ghPages': {
         src: '<%= concat.ghPages.dest %>',
