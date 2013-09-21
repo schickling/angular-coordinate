@@ -9,7 +9,7 @@ angular.module('angular-coordinate', [])
 
 
 				var canvasElement, width, height, ctx, centerPoint,
-					isDragging, scaleX, scaleY, dragPoint, api,
+					isDragging, scaleX, scaleY, dragPoint,
 					mouseTrackerElements, showInput,
 					points = [],
 					functions = [];
@@ -119,12 +119,11 @@ angular.module('angular-coordinate', [])
 				}
 
 				function provideApi() {
-
-					if (attrs.api) {
+					var apiAttr = attrs.api || 'coordinate',
 						api = new CoordinateApi();
-						scope.$parent[attrs.api] = api;
-						scope.addFunction = api.addFunction;
-					}
+
+					scope.$parent[apiAttr] = api;
+					scope.addFunction = api.addFunction;
 				}
 
 				function CoordinateApi() {
