@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('angular-coordinate', [])
+angular.module('angular-coordinate.html', []);
+
+angular.module('angular-coordinate', ['angular-coordinate.html'])
 	.directive('coordinate', function () {
 		return {
 			restrict: 'E',
