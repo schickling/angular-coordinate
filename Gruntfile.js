@@ -157,7 +157,7 @@ module.exports = function(grunt) {
       dist: {
         options: {
           module: null, // no bundle module for all the html2js templates
-          base: '.'
+          base: 'template'
         },
         files: [{
           expand: true,
