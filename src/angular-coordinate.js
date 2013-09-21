@@ -23,14 +23,14 @@ angular.module('angular-coordinate', [])
 
 					// width
 					width = parseInt(attrs.width, 10) || 700;
-					if (attrs.width.slice(-1) === '%') {
+					if (attrs.width && attrs.width.slice(-1) === '%') {
 						width *= 0.01;
 						width *= element[0].parentElement.offsetWidth;
 					}
 
 					// height
 					height = parseInt(attrs.height, 10) || 400;
-					if (attrs.height.slice(-1) === '%') {
+					if (attrs.height && attrs.height.slice(-1) === '%') {
 						height *= 0.01;
 						height *= element[0].parentElement.offsetHeight;
 					}
