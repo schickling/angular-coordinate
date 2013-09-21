@@ -7,7 +7,7 @@ module.exports = function(grunt) {
   var yoConfig = {
     livereload: 35729,
     src: 'src',
-    dist: 'dist',
+    'ghPages': '.gh-pages',
     demo: 'demo',
     template: 'template'
   };
@@ -40,13 +40,13 @@ module.exports = function(grunt) {
       }
     },
     clean: {
-      dist: {
+      'ghPages': {
         files: [{
           dot: true,
           src: [
             '.tmp',
-            '<%= yo.dist %>/*',
-            '!<%= yo.dist %>/.git*'
+            '<%= yo.ghPages %>/*',
+            '!<%= yo.ghPages %>/.git*'
           ]
         }]
       },
@@ -94,6 +94,15 @@ module.exports = function(grunt) {
             ];
           }
         }
+      },
+      'ghpages': {
+        options: {
+          middleware: function (connect) {
+            return [
+              mountFolder(connect, yoConfig.ghPages)
+            ];
+          }
+        }
       }
     },
     less: {
@@ -101,7 +110,7 @@ module.exports = function(grunt) {
         // dumpLineNumbers: 'all',
         paths: ['<%= yo.src %>']
       },
-      dist: {
+      'ghPages': {
         files: {
           '<%= yo.src %>/<%= yo.name %>.css': '<%= yo.src %>/<%= yo.name %>.less'
         }
@@ -143,18 +152,13 @@ module.exports = function(grunt) {
       options: {
         banner: '<%= meta.banner %>'
       },
-      dist: {
-        src: ['<%= yo.src %>/<%= pkg.name %>.js'],
-        dest: '<%= yo.dist %>/<%= pkg.name %>.js'
+      'ghPages': {
+        src: ['<%= yo.ghPages %>/<%= pkg.name %>.js'],
+        dest: '<%= yo.ghPages %>/<%= pkg.name %>.js'
       }
-      // dist: {
-      //   files: {
-      //     '/.js': '/.js'
-      //   }
-      // }
     },
     html2js: {
-      dist: {
+      'ghPages': {
         options: {
           module: null, // no bundle module for all the html2js templates
           base: 'template'
@@ -174,16 +178,21 @@ module.exports = function(grunt) {
       dist: {
         src: ['<%= yo.src %>/*.js',
               '<%= yo.template %>/*.html.js'],
-        dest: '<%= yo.dist %>/<%= pkg.name %>.js'
+        dest: '<%= pkg.name %>.js'
+      },
+      'ghPages': {
+        src: ['<%= yo.src %>/*.js',
+              '<%= yo.template %>/*.html.js'],
+        dest: '<%= yo.ghPages %>/<%= pkg.name %>.js'
       }
     },
     copy: {
-      dist: {
+      'ghPages': {
         files: [{
           expand: true,
           dot: true,
           cwd: './demo',
-          dest: './dist',
+          dest: './.gh-pages',
           src: [
             '**'
           ]
@@ -202,20 +211,24 @@ module.exports = function(grunt) {
       },
       dist: {
         src: '<%= concat.dist.dest %>',
-        dest: '<%= yo.dist %>/angular-<%= pkg.name %>.min.js'
+        dest: 'angular-<%= pkg.name %>.min.js'
+      },
+      'ghPages': {
+        src: '<%= concat.ghPages.dest %>',
+        dest: '<%= yo.ghPages %>/angular-<%= pkg.name %>.min.js'
       }
     },
     'gh-pages': {
       options: {
-        base: 'dist'
+        base: '.gh-pages'
       },
       src: '**'
     }
   });
 
   grunt.registerTask('server', function (target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+    if (target === 'gh-pages') {
+      return grunt.task.run(['build', 'open', 'connect:ghpages:keepalive']);
     }
 
     grunt.task.run([
@@ -231,12 +244,8 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'clean:dist',
-    'copy:dist',
-    'less:dist',
-    'ngmin:dist',
     'html2js',
-    'concat',
+    'concat:dist',
     'uglify:dist'
   ]);
 
@@ -247,10 +256,18 @@ module.exports = function(grunt) {
     'bump-commit'
   ]);
 
+  grunt.registerTask('pre-gh-pages', [
+    'clean:ghPages',
+    'copy:ghPages',
+    'html2js',
+    'concat:ghPages',
+    'ngmin:ghPages',
+    'uglify:ghPages'
+  ]);
+
   grunt.registerTask('publish', [
     'jshint',
-    //'test',
-    'build',
+    'pre-gh-pages',
     'gh-pages'
   ]);
 
