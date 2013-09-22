@@ -19,7 +19,7 @@ angular.module('angular-coordinate', ['angular-coordinate.html'])
 
 				function initAttibutes() {
 
-					hideAxis = attrs.hideAxis || false;
+					hideAxis = attrs.hasOwnProperty('hideAxis') || false;
 
 					// scale
 					scaleX = attrs.scaleX || 100;
