@@ -3,11 +3,11 @@
 angular.module('angular-coordinate.html', []);
 
 angular.module('angular-coordinate', ['angular-coordinate.html'])
-	.directive('coordinate', function () {
+	.directive('coordinate', function() {
 		return {
 			restrict: 'E',
 			templateUrl: 'angular-coordinate.html',
-			link: function (scope, element, attrs) {
+			link: function(scope, element, attrs) {
 
 
 				var canvasElement, width, height, ctx, centerPoint,
@@ -66,7 +66,7 @@ angular.module('angular-coordinate', ['angular-coordinate.html'])
 				}
 
 				function initScrollListener() {
-					canvasElement.addEventListener('mousewheel', function (e) {
+					canvasElement.addEventListener('mousewheel', function(e) {
 
 						var ratio = scaleX / scaleY,
 							minimumScale = 1.05,
@@ -133,16 +133,16 @@ angular.module('angular-coordinate', ['angular-coordinate.html'])
 
 				function CoordinateApi() {
 					return {
-						addPoint: function (x, y) {
+						addPoint: function(x, y) {
 							//register the point for redrawing when moving
 							registerPoint(x, y);
 							draw();
 						},
-						addFunction: function (functionString) {
+						addFunction: function(functionString) {
 							registerFunction(functionString);
 							draw();
 						},
-						reset: function () {
+						reset: function() {
 							functions = [];
 							draw();
 						}
