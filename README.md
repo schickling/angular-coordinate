@@ -6,7 +6,9 @@ Coordiante system for AngularJS
 ## [Demo](http://schickling.github.io/angular-coordinate/)
 
 ## Features
-*TODO*
+* Drag & Drop
+* Zoom
+* Easy to use
 
 ## Installation
 ```sh
